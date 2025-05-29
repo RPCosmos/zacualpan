@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pueblo Mágico Encantado</title>
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1920x600') no-repeat center center/cover;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        header p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff6b6b;
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+        }
+        
+        nav {
+            background: #333;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 15px 0;
+        }
+        
+        nav ul li {
+            margin: 0 20px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: #ff6b6b;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section:nth-child(even) {
+            background-color: #fff;
+        }
+        
+        .news-grid, .attractions-grid, .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .news-card, .attraction-card, .culture-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .section:nth-child(even) .news-card,
+        .section:nth-child(even) .attraction-card,
+        .section:nth-child(even) .culture-card {
+            background: #f9f9f9;
+        }
+        
+        .news-card:hover, .attraction-card:hover, .culture-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .card-content p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .history-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .history-text {
+            flex: 1;
+        }
+        
+        .history-img {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        
+        .history-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .community-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .community-content p {
+            margin-bottom: 30px;
+        }
+        
+        .map-container {
+            height: 500px;
+            margin-top: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+        
+        footer p {
+            margin-bottom: 10px;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: #3846dc;
+        }
+        
+        /* Estilos para los modales */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 900px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            position: relative;
+            animation: modalopen 0.5s;
+        }
+        
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 30px;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close:hover {
+            color: #333;
+        }
+        
+        .modal-header {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            text-align: left;
+            margin-bottom: 10px;
+        }
+        
+        .modal-body {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-img {
+            flex: 1;
+        }
+        
+        .modal-img img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .modal-text {
+            flex: 2;
+        }
+        
+        .modal-footer {
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            text-align: right;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            header p {
+                font-size: 1.2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul li {
+                margin: 10px 0;
+            }
+            
+            .history-content {
+                flex-direction: column;
+            }
+            
+            .history-text, .history-img {
+                width: 100%;
+            }
+            
+            .modal-body {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        
+     
+        <h1>Bienvenido a Zacualpan De Amilpas</h1>
+        <p>Descubre la belleza, historia y cultura de nuestro maravilloso pueblo donde cada rincón cuenta una historia unica y diferente.</p>
+        
+        <a href="#noticias" class="btn">Explorar</a>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="#noticias">Noticias</a></li>
+            <li><a href="#historia">Historia</a></li>
+            <li><a href="#atracciones">Atracciones</a></li>
+            <li><a href="#cultura">Cultura</a></li>
+            <li><a href="#comunidad">Comunidad</a></li>
+            <li><a href="#mapa">Mapa</a></li>
+        </ul>
+    </nav>
+    
+    <section id="noticias" class="section">
+        <div class="container">
+            <h2>Novedades</h2>
+            <div class="news-grid">
+                <div class="news-card" onclick="openModal('modalN1')">
+                    <img src="mojiganga.jpg" alt="Noticia 1" class="card-img">
+                    <div class="card-content">
+                        <h3>MOJIGANGA</h3>
+                        <p>Es una tradición que se lleva a cabo el 
+último domingo de septiembre en 
+honor a la virgen del Rosario. 
+Participando comparsas, carros 
+alegóricos, los tradicionales chínelos 
+provenientes de las localidades del 
+municipio, así como de los municipios 
+aledaños.</p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+                
+                <div class="news-card" onclick="openModal('modal2')">
+                    <img src="tianguis.jpg" alt="Noticia 2" class="card-img">
+                    <div class="card-content">
+                        <h3>Tianguis Del Trueque</h3>
+                        <p>El Mercado del Trueque de Zacualpan 
+es más que una feria; es un vínculo 
+directo con el pasado prehispánico de 
+la región. Enraizado en prácticas 
+ancestrales de intercambio, este 
+mercado refleja la esencia misma de la 
+comunidad, donde los habitantes 
+locales intercambian productos 
+cultivados y artesanías.</p>
+                        <p class="btn-more">Ver MAS→</p>
+                    </div>
+                </div>
+                
+                <div class="news-card" onclick="openModal('modal3')">
+                    <img src="tapete.jpg" alt="Noticia 3" class="card-img">
+                    <div class="card-content">
+                        <h3>Tapetes de Aserrín</h3>
+                        <p>En Zacualpan de Amilpas, durante la festividad que se celebra en honor a la Virgen del Rosario una tradición es la elaboración de tapetes de aserrín que cubren el camino que recorren los pobladores con la imagen acuestas; cada familia y amigos se organizan para elaborar una gran variedad de diseños frente a sus hogares mostrando así su devoción y respeto a esta, y por las hermosas tradiciones que aún existen en México.</p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="historia" class="section">
+        <div class="container">
+            <h2>Nuestra Historia</h2>
+            <div class="history-content">
+                <div class="history-text">
+                    <p>ZACUALPYORK</p>
+                    <p>Los olmecas fueron los primeros en habitar la zona, seguidos por los toltecas, y posteriormente, grupos chichimecas y chalcas. El nombre Zacualpan significa "sobre cosa tapada" en náhuatl. El municipio es conocido por su mercado de trueque, una tradición prehispánica que aún se mantiene.</p>
+                    <button onclick="openModal('modalHistoria')" class="btn">Ver historia completa</button>
+                </div>
+                <div class="history-img" onclick="openModal('modalHistoriaImg')">
+                    <img src="histopr.jpg" alt="Historia del pueblo">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="atracciones" class="section">
+        <div class="container">
+            <h2>Atracciones Principales</h2>
+            <div class="attractions-grid">
+                <div class="attraction-card" onclick="openModal('modalAtraccion1')">
+                    <img src="convento.jpg" alt="Atracción 1" class="card-img">
+                    <div class="card-content">
+                        <h3>EX-Convento</h3>
+                        <p>El ex-convento es un bien cultural inscrito en 
+1994 en la lista de 
+Patrimonio de la 
+Humanidad. 
+El convento de la 
+Inmaculada Concepción 
+fue fundado por los 
+agustinos en 1535. </p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+                
+                <div class="attraction-card" onclick="openModal('modalAtraccion2')">
+                    <img src="chici1.jpg" alt="Atracción 2" class="card-img">
+                    <div class="card-content">
+                        <h3>EX Hacienda de 
+Cuautepec  </h3>
+                        <p>Fue fundada por los 
+religiosos jesuitas y se 
+dedicaba a la producción y 
+procesamiento de cultivos 
+de caña de azúcar. 
+Cuenta con un sistema de 
+riego para hacer llegar el 
+agua a los cultivos a través 
+de acueductos. </p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+                
+                <div class="attraction-card" onclick="openModal('modalAtraccion3')">
+                    <img src="cuate.jpg" alt="Atracción 3" class="card-img">
+                    <div class="card-content">
+                        <h3>EX Hacienda de 
+Chicomocelo</h3>
+                        <p>Chicomocelo significa 
+“Lugar de los sietes 
+jaguares o donde 
+jugueteaban los 
+jaguares”. Con la llegada 
+de los españoles, se 
+impulsó en la región la 
+fundación de distintos 
+centros industriales y es 
+así como la orden jesuita 
+construye Chicomocelo en 
+el siglo XVII.</p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="cultura" class="section">
+        <div class="container">
+            <h2>Cultura y Tradiciones</h2>
+            <div class="culture-grid">
+                <div class="culture-card" onclick="openModal('modalCultura1')">
+                    <img src="malin.jpg" alt="Cultura 1" class="card-img">
+                    <div class="card-content">
+                        <h3>Las 
+Malinches </h3>
+                        <p>Es un evento desarrollado en las 
+fechas de septiembre, más 
+precisamente el 16 de septiembre.  
+Tiene una connotación indígena y 
+mestiza durante de la época de la 
+conquista de Tenochtitlan.</p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card" onclick="openModal('modalCultura2')">
+                    <img src="agua.jpg" alt="Cultura 2" class="card-img">
+                    <div class="card-content">
+                        <h3>Agua 
+ardiente 
+(curados) </h3>
+                        <p>Se remonta a la época colonial cuando 
+los españoles, introdujeron la caña de 
+azúcar y la técnica de destilación.  
+Morelos se convirtió en un importante 
+productor de caña y agua ardiente por 
+su clima y tierra.</p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+                
+                <div class="culture-card" onclick="openModal('modalCultura3')">
+                    <img src="carton.jpg" alt="Cultura 3" class="card-img">
+                    <div class="card-content">
+                        <h3>Taller De Cartoneria</h3>
+                        <p>Es una tradición que ha sido heredado 
+de generación en generación, 
+transmitiendo los procesos como la 
+elaboración y pintura de las máscaras. 
+Además, es el reflejo de la cultura, 
+tradición e historia representativa del 
+lugar. </p>
+                        <p class="btn-more">Ver detalles →</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="comunidad" class="section">
+        <div class="container">
+            <h2>Nuestra Comunidad</h2>
+            <div class="community-content">
+                <p>,,.........................................................................</p>
+                <button onclick="openModal('modalComunidad')" class="btn">Conoce nuestra comunidad</button>
+            </div>
+        </div>
+    </section>
+    
+    <section id="mapa" class="section">
+        <div class="container">
+            <h2>Ubicación y Mapa</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Encuentra cómo llegar a Pueblo Mágico Encantado y descubre todos los puntos de interés.</p>
+            <div class="map-container">
+                <!-- Mapa de Google Maps -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15057.53430760125!2d-99.1017987!3d19.4326077!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDI1JzU3LjQiTiA5OcKwMDYnMDYuNSJX!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="openModal('modalMapa')" class="btn">Ver guía de ubicaciones</button>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>ZACUALMAP © 2025 - Todos los derechos reservados</p>
+        <p>Contacto: ZACUALPANINTELIGNT@GMAIL.COM | Tel: +52 733 157 93 43</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook">f</i></a>
+            <a href="#"><i class="fab fa-instagram">i</i></a>
+            <a href="#"><i class="fab fa-twitter">x</i></a>
+            <a href="#"><i class="fab fa-youtube">y</i></a>
+        </div>
+    </footer>
+    
+    <!-- Modales -->
+    
+    <!-- Modal Noticia 1 -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalN1')">&times;</span>
+            <div class="modal-header">
+                <h2>MOJIGANGA</h2>
+                <p>Publicado:PENDIENTE | Categoría: Eventos</p>
+            </div>
+            <div class="modalN1-body">
+                <div class="modal-img">
+                    <img src="https://via.placeholder.com/500x300" alt="Festival de Flores">
+                </div>
+                <div class="modal-text">
+                    <p>Eonales. El evento tendrá lugar en la Plaza Principal del 2</p>
+                    <p><strong>Horarios:</strong> 9:00 am - 8:00 pm</p>
+                    <p><strong>Actividades destacadas:</strong></p>
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <p></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal('modalN1')" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Noticia 2 -->
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <div class="modal-header">
+                <h2>Nueva Ruta Turística</h2>
+                <p></p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="https://via.placeholder.com/500x300" alt="Nueva Ruta Turística">
+                </div>
+                <div class="modal-text">
+                    <p></p>
+                    <p></p>
+                    <p><strong></strong></p>
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                   
+                   
+                    </ul>
+                    <p></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal('modal2')" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Historia -->
+    <div id="modalHistoria" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalHistoria')">&times;</span>
+            <div class="modal-header">
+                <h2>Historia Completa de Nuestro Pueblo</h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="https://via.placeholder.com/500x300" alt="Historia del Pueblo">
+                </div>
+                <div class="modal-text">
+                    <h3></h3>
+                    <p></p>
+                    <p></p>
+                    
+                    <h3></h3>
+                    <p></p>
+                    <p></p>
+                    
+                    <h3>S</h3>
+                    <p>E</p>
+                    <p></p>
+                    
+                    <h3>Reconocimiento como Pueblo Mágico</h3>
+                    <p>En 2010, Pueblo Mágico Encantado recibió el nombramiento de "Pueblo Mágico" por parte de la Secretaría de Turismo, reconociendo su riqueza cultural, histórica y natural.</p>
+                    <p>Hoy en día, el pueblo mantiene un equilibrio entre la preservación de su patrimonio y el desarrollo turístico sostenible, siendo un ejemplo de cómo las comunidades pueden crecer sin perder su esencia.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal('modalHistoria')" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Atracción 1 -->
+    <div id="modalAtraccion1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalAtraccion1')">&times;</span>
+            <div class="modal-header">
+                <h2>Plaza Principal</h2>
+                <p>Corazón histórico y cultural del pueblo</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="https://via.placeholder.com/500x300" alt="Plaza Principal">
+                </div>
+                <div class="modal-text">
+                    <p>La Plaza Principal de Pueblo Mágico Encantado es el punto de encuentro por excelencia y el lugar donde se concentra la vida social del pueblo. Rodeada de portales históricos del siglo XVIII, es el lugar perfecto para disfrutar de la atmósfera local.</p>
+                    
+                    <h3>Características principales:</h3>
+                    <ul>
+                        <li><strong>Kiosco central:</strong> Construido en 1910 con hierro forjado traído de Francia.</li>
+                        <li><strong>Portales:</strong> Albergan cafés tradicionales, restaurantes y tiendas de artesanías.</li>
+                        <li><strong>Jardines:</strong> Diseñados con especies vegetales endémicas y mantenidos por los jardineros del pueblo.</li>
+                        <li><strong>Fuente monumental:</strong> Data de 1789 y representa a Neptuno, dios romano de las aguas.</li>
+                    </ul>
+                    
+                    <h3>Actividades recomendadas:</h3>
+                    <p><strong>Por la mañana:</strong> Disfrutar un café tradicional en alguno de los portales mientras observa el despertar del pueblo.</p>
+                    <p><strong>Tardes:</strong> Los jueves y domingos hay música en vivo en el kiosco central.</p>
+                    <p><strong>Noches:</strong> Las noches de luna llena se organiza una verbena popular con antojitos mexicanos.</p>
+                    
+                    <p><strong>Horario:</strong> Abierto las 24 horas. Los comercios abren aproximadamente de 9:00 am a 9:00 pm.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal('modalAtraccion1')" class="btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal Comunidad -->
+    <div id="modalComunidad" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalComunidad')">&times;</span>
+            <div class="modal-header">
+                <h2>Nuestra Comunidad</h2>
+                <p>El alma de Pueblo Mágico Encantado</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-img">
+                    <img src="https://via.placeholder.com/500x300" alt="Comunidad">
+                </div>
+                <div class="modal-text">
+                    <p>Los habitantes de Pueblo Mágico Encantado son conocidos por su calidez y hospitalidad. Con una población de aproximadamente 8,000 habitantes, la comunidad mantiene vivas tradiciones centenarias mientras se adapta a los
